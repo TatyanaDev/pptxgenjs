@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: linear-gradient(to bottom, #4c6f94, #9c64b8);
+  font-family: sans-serif;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+}
+
+h1,
+h2,
+p {
+  margin-bottom: 15px;
+}
+
+p {
+  color: #333333;
+  font-size: 16px;
+}
