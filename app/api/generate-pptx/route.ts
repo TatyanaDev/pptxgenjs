@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createPptx } from "@/lib/generateSlide";
-// import { createPptx } from "@/lib/generateSlide";
 
 export async function GET() {
   const pptxBuffer = await createPptx();

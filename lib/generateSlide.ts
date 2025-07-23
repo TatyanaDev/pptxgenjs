@@ -18,7 +18,6 @@ export async function createPptx(): Promise<Buffer> {
   const contentWidth = 13.33 - 2 * margin;
   const contentHeight = 7.5 - 2 * margin;
 
-
   slide.addText("The Dependencies Dilemma", {
     x: margin,
     y: margin,
@@ -38,10 +37,10 @@ export async function createPptx(): Promise<Buffer> {
     rectRadius: 0.1,
     shadow: {
       type: "outer",
-      angle: 90,
-      blur: 14,
-      offset: 0.2,
-      opacity: 0.3,
+      angle: 180,
+      blur: 10,
+      offset: 0.05,
+      opacity: 0.15,
       color: "000000",
     },
   });
@@ -102,15 +101,15 @@ export async function createPptx(): Promise<Buffer> {
 
   slide.addText(
     [
-      { text: "Real-World Example\n\n", options: { fontSize: 14, bold: true, color: "1A294B" } },
+      { text: "Real-World Example\n", options: { fontSize: 14, bold: true, color: "1A294B" } },
       {
-        text: "A fintech startup invested in comprehensive KYC infrastructure that enabled:\n\n",
-        options: { fontSize: 10, color: "000000" },
+        text: "A fintech startup invested in comprehensive KYC infrastructure that enabled:\n",
+        options: { fontSize: 12, color: "000000" },
       },
-      { text: "• Launch in 4 new countries within 12 months\n", options: { fontSize: 10, color: "000000" } },
-      { text: "• Add 3 regulated financial products\n", options: { fontSize: 10, color: "000000" } },
-      { text: "• Partner with 2 major banks\n", options: { fontSize: 10, color: "000000" } },
-      { text: "• Achieve compliance in weeks instead of months", options: { fontSize: 10, color: "000000" } },
+      { text: "• Launch in 4 new countries within 12 months\n", options: { fontSize: 12, color: "000000" } },
+      { text: "• Add 3 regulated financial products\n", options: { fontSize: 12, color: "000000" } },
+      { text: "• Partner with 2 major banks\n", options: { fontSize: 12, color: "000000" } },
+      { text: "• Achieve compliance in weeks instead of months", options: { fontSize: 12, color: "000000" } },
     ],
     {
       x: margin + 0.2,
@@ -128,6 +127,14 @@ export async function createPptx(): Promise<Buffer> {
     h: blockH2,
     fill: { color: "FFFFFF" },
     rectRadius: 0.1,
+    shadow: {
+      type: "outer",
+      angle: 180,
+      blur: 10,
+      offset: 0.05,
+      opacity: 0.15,
+      color: "000000",
+    },
   });
 
   slide.addText("Dependency Mapping", {
@@ -195,7 +202,7 @@ export async function createPptx(): Promise<Buffer> {
     w: leftW - 0.1,
     h: blockH3,
     fill: { color: lightGreen },
-        rectRadius: 0.1,
+    rectRadius: 0.1,
   });
 
   slide.addText(
@@ -223,8 +230,15 @@ export async function createPptx(): Promise<Buffer> {
     h: gridH - 1,
     fill: { color: white },
     rectRadius: 0.1,
+    shadow: {
+      type: "outer",
+      angle: 180,
+      blur: 10,
+      offset: 0.05,
+      opacity: 0.15,
+      color: "000000",
+    },
   });
-  
 
   const treeX = margin + leftW + 0.4;
   const treeY = topY + 0.5;
@@ -246,9 +260,9 @@ export async function createPptx(): Promise<Buffer> {
     foundation: "4285F4",
   };
 
-  const revenue = ["Banking-as-a-Service", "White-Label Solutions", "Cross-Border Payments", "Institutional Trading"];
-  const products = ["International Markets", "Business Banking", "Investment Platform", "Lending Products"];
-  const compliance = ["AML Monitoring", "Regulatory Reporting", "Risk Assessment"];
+  const revenue = ["Banking-as-a-\nService", "White-Label\nSolutions", "Cross-Border\nPayments", "Institutional\nTrading"];
+  const products = ["International\nMarkets", "Business\nBanking", "Investment\nPlatform", "Lending\nProducts"];
+  const compliance = ["AML\nMonitoring", "Regulatory\nReporting", "Risk\nAssessment"];
   const foundation = ["KYC/Identity\nVerification"];
 
   function drawBox(text: string, x: number, y: number, color: string, w = boxW) {
@@ -259,6 +273,7 @@ export async function createPptx(): Promise<Buffer> {
       h: boxH,
       fill: { color },
     });
+
     slide.addText(text, {
       x,
       y,
@@ -322,11 +337,16 @@ export async function createPptx(): Promise<Buffer> {
     const y2 = levelsY[2];
 
     slide.addShape(pptx.ShapeType.line, {
-      x: x1,
-      y: y1,
-      w: x2 - x1,
-      h: y2 - y1,
-      line: { color: colors.compliance, width: 1.5 },
+      x: Math.min(x1, x2),
+      y: Math.min(y1, y2),
+      w: Math.abs(x2 - x1),
+      h: Math.abs(y2 - y1),
+      flipH: x2 < x1,
+      flipV: y2 < y1,
+      line: {
+        color: colors.compliance,
+        width: 1.5,
+      },
     });
   });
 
@@ -344,11 +364,16 @@ export async function createPptx(): Promise<Buffer> {
     const toX = foundationCenterX + delta * 0.8;
 
     slide.addShape(pptx.ShapeType.line, {
-      x: fromX,
-      y: fromY,
-      w: toX - fromX,
-      h: toY - fromY,
-      line: { color: colors.foundation, width: 1.5 },
+      x: Math.min(fromX, toX),
+      y: Math.min(fromY, toY),
+      w: Math.abs(toX - fromX),
+      h: Math.abs(toY - fromY),
+      flipH: toX < fromX,
+      flipV: toY < fromY,
+      line: {
+        color: colors.foundation,
+        width: 1.5,
+      },
     });
   });
 
@@ -386,7 +411,7 @@ export async function createPptx(): Promise<Buffer> {
       y: legendY,
       w: labelW,
       h: squareSize,
-      fontSize: 10,
+      fontSize: 12,
       valign: "middle",
       color: "000000",
     });
